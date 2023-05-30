@@ -1,0 +1,15 @@
+#Data analysis for Spatial Transcriptome data (edit by ccg)
+# 1:Analysis for fastq file
+spaceranger count --id="V1_Adult_Mouse_Brain" \
+                  --description="Adult Mouse Brain (Coronal)" \
+                  --transcriptome=/newdata/chencg/software/spaceranger_reference/mouse/refdata-gex-mm10-2020-A \
+                  --fastqs=/newdata/chencg/projects/spatial/test/fastq/V1_Adult_Mouse_Brain_fastqs \
+                  --image=/newdata/chencg/projects/spatial/test/fastq/V1_Adult_Mouse_Brain_image.tif \
+                  --slide=V19L01-041 \
+                  --area=C1 \
+                  --localcores=60 \
+                  --localmem=500
+
+
+
+
