@@ -167,9 +167,3 @@ for(i in 1:length(hbv_spatial_list)){
 }
 
 
-
-
-
-
-
-
