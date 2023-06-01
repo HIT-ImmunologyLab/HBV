@@ -6,7 +6,7 @@ library(ggplot2)
 library(Seurat)
 library(ggrepel)
 
-#######read Read blood scTCR data
+#######Read blood scTCR data
 clone_meta <- read.table("Liver_PBMC_combine_rename_id.txt",sep="\t",header=T,
                         stringsAsFactor=F)
 clone_meta$tcr_full_length <- paste0(clone_meta$chain1_V,clone_meta$chain1_J,clone_meta$chain1_C,clone_meta$chain1_CDR3,
@@ -17,7 +17,7 @@ clone_sub <- clone_meta%>%filter(loc=="PBMC")%>%filter(majorCluster%in%CD8_cellt
 
 
 
-#######Read the experimentally acquired HBV-specific  TCR data
+#######Read the experimentally acquired HBV-specific scTCR data
 specific_tcr <- read.table("./Tetramer/TCR_result.txt",sep="\t",header=T)
 specific_tcr$tcr_full_length <- paste0(specific_tcr$alpha_v_gene,specific_tcr$alpha_j_gene,specific_tcr$alpha_c_gene,specific_tcr$alpha_cdr3,
 specific_tcr$beta_v_gene,specific_tcr$beta_j_gene,specific_tcr$beta_c_gene,specific_tcr$beta_cdr3)
