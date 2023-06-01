@@ -12,8 +12,9 @@ clone_meta <- read.table("Liver_PBMC_combine_rename_id.txt",sep="\t",header=T,
 clone_meta$tcr_full_length <- paste0(clone_meta$chain1_V,clone_meta$chain1_J,clone_meta$chain1_C,clone_meta$chain1_CDR3,
                                   clone_meta$chain2_V,clone_meta$chain2_J,clone_meta$chain2_C,clone_meta$chain2_CDR3)
 
-clone_sub <- clone_meta%>%filter(loc=="PBMC")%>%filter(majorCluster%in%CD8_celltype)
 CD8_celltype <- c("GZMB+ CD8 CTL","ZNF683+ GZMB+ CD8 CTL","RGS1+ GZMK+ CD8 CTL","naive CD8","CD8 Tem")
+clone_sub <- clone_meta%>%filter(loc=="PBMC")%>%filter(majorCluster%in%CD8_celltype)
+
 
 
 #######Read the experimentally acquired HBV-specific  TCR data
