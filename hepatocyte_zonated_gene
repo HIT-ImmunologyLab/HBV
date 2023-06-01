@@ -1,0 +1,7 @@
+
+#Validation of zonated gene signatures using scRNA-seq (edit by ccg)
+library(Seurat)
+
+
+
+
