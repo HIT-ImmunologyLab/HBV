@@ -62,7 +62,8 @@ for(patient in unique(clone_meta$donor_name)){
 
 
 final_result <- clonalRelatedness(list <- result, editDistance = 3)
-colnames(clone_meta)[1] <- "samples"
+colnames(clone_meta)[1] <- "sampleType"
+colnames(clone_meta)[2] <- "samples"
 relatedness_value <- left_join(final_result,clone_meta[,c("samples","sampleType")],by="samples")
 relatedness_value_liver = relatedness_value[!duplicated(relatedness_value),]%>%
 filter(samples!="A02_LIVER_ZLY")%>%filter(samples!="C05_LIVER_MFB")############the numbers of clonetype in A02 and C05 are too small！
