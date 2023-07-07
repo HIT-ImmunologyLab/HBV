@@ -5,8 +5,8 @@ library(ggrepel)
 #1.calculate blood hbvctl pool relatedness
 clone_meta <- read.table("blood_ctl_meta.txt",sep="\t",header=T,stringsAsFactor=F)
 result <- list()
-for(patient in unique(clone_meta$patient_id)){
-  a <- clone_meta[clone_meta$patient_id%in%patient,]
+for(patient in unique(clone_meta$patient)){
+  a <- clone_meta[clone_meta$patient%in%patient,]
   a1 <- a[!grepl("\\|C",a$chain2_CDR3),]
   a2 <- a[grep("\\|C",a$chain2_CDR3),]
   if(nrow(a2)>0){
@@ -28,7 +28,7 @@ for(patient in unique(clone_meta$patient_id)){
   result[[patient]] <- b
 }
 final_result <- clonalRelatedness(list = result, editDistance = 3)
-colnames(clone_meta)[16] <- "samples"
+colnames(clone_meta)[2] <- "samples"
 relatedness_value <- left_join(final_result,clone_meta[,c("samples","sampleType")],by="samples")
 relatedness_value_blood <- relatedness_value[!duplicated(relatedness_value),]
 
