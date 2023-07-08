@@ -2,6 +2,26 @@ library(LymphoSeq)
 library(dplyr)
 library(ggsci)
 library(ggrepel)
+
+clonalRelatedness=function (list, editDistance = 3) 
+{
+  relatedness <- as.numeric()
+  clonality <- as.numeric()
+  cloneResolved <- as.character()
+  i <- 2
+  for (i in 1:length(list)) {
+    file <- list[[i]]
+    top <- file[order(file$count, decreasing = TRUE), "CDR3B"][1]
+    result1 <- length(which(stringdist::stringdist(top, file$CDR3B, 
+                                                   method = "lv") < editDistance))/nrow(file)
+    relatedness <- c(relatedness, result1)
+  }
+  df <- data.frame(samples = names(list), clonalRelatedness = relatedness)
+  return(df)
+}
+
+
+
 #1.calculate blood hbvctl pool relatedness
 clone_meta <- read.table("C:\\Users\\cuim\\Downloads\\blood_ctl_meta.txt",sep="\t",header=T,stringsAsFactor=F)
 result <- list()
