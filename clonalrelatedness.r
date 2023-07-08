@@ -3,7 +3,7 @@ library(dplyr)
 library(ggsci)
 library(ggrepel)
 #1.calculate blood hbvctl pool relatedness
-clone_meta <- read.table("blood_ctl_meta.txt",sep="\t",header=T,stringsAsFactor=F)
+clone_meta <- read.table("C:\\Users\\cuim\\Downloads\\blood_ctl_meta.txt",sep="\t",header=T,stringsAsFactor=F)
 result <- list()
 for(patient in unique(clone_meta$patient)){
   a <- clone_meta[clone_meta$patient%in%patient,]
@@ -23,8 +23,8 @@ for(patient in unique(clone_meta$patient)){
     
     a <- rbind(a1,temp_a)
   }
-  b <- group_by(a,chain2_CDR3,,sampleType)%>%summarise(count=n())
-  b$nucleotide <- b$chain2_CDR3 
+  b <- group_by(a,chain2_CDR3,,sampleType)%>%summarise(count=n())%>%as.data.frame()
+  b$CDR3B <- b$chain2_CDR3 
   result[[patient]] <- b
 }
 final_result <- clonalRelatedness(list = result, editDistance = 3)
@@ -32,8 +32,9 @@ colnames(clone_meta)[2] <- "samples"
 relatedness_value <- left_join(final_result,clone_meta[,c("samples","sampleType")],by="samples")
 relatedness_value_blood <- relatedness_value[!duplicated(relatedness_value),]
 
+
 #2.calculate liver hbvctl pool relatedness
-clone_meta <- read.table("liver_ctl_meta.txt",sep="\t",header=T, stringsAsFactor=F)
+clone_meta <- read.table("C:\\Users\\cuim\\Downloads\\liver_ctl_meta.txt",sep="\t",header=T, stringsAsFactor=F)
 result = list()
 for(patient in unique(clone_meta$donor_name)){
   a <- clone_meta[clone_meta$donor_name%in%patient,]
@@ -53,20 +54,21 @@ for(patient in unique(clone_meta$donor_name)){
     
     a <- rbind(a1,temp_a)
   }
-  b <- group_by(a,chain2_CDR3,group_name)%>%summarise(count=n())
-  b$nucleotide=b$chain2_CDR3
+  b <- group_by(a,chain2_CDR3,group_name)%>%summarise(count=n())%>%as.data.frame()
+  b$CDR3B=b$chain2_CDR3
   
   result[[patient]] <- b
 }
 
 
 
-final_result <- clonalRelatedness(list <- result, editDistance = 3)
-colnames(clone_meta)[1] <- "sampleType"
+final_result <- clonalRelatedness(list=result, editDistance = 3)
 colnames(clone_meta)[2] <- "samples"
+colnames(clone_meta)[1] <- "sampleType"
+
 relatedness_value <- left_join(final_result,clone_meta[,c("samples","sampleType")],by="samples")
 relatedness_value_liver = relatedness_value[!duplicated(relatedness_value),]%>%
-filter(samples!="A02_LIVER_ZLY")%>%filter(samples!="C05_LIVER_MFB")############the numbers of clonetype in A02 and C05 are too small！
+  filter(samples!="A02_LIVER_ZLY")%>%filter(samples!="C05_LIVER_MFB")############the numbers of clonetype in A02 and C05 are too small！
 
 relatedness_value_liver$pool <- "Liver hbvctl TCR pool"
 relatedness_value_liver$samples <- sapply(relatedness_value_liver$samples,function(x){strsplit(x,split = "_")%>%unlist()%>%.[1]})
@@ -86,10 +88,6 @@ p = ggplot(relatedness_data,aes(x=sampleType, y=clonalRelatedness,color=sampleTy
         legend.key.height=unit(0.5,"cm"),
         axis.text=element_text(size=7),
   )+
-  scale_fill_uchicago(palette = "dark")+
-  xlab("")+
-  scale_color_uchicago(palette = "dark")+scale_y_log10()
+  xlab("")+scale_y_log10()
 ggsave("pool_ctl.pdf",p,width=7,height=3)
-
-
 
