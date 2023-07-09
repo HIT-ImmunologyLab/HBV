@@ -23,7 +23,7 @@ clonalRelatedness=function (list, editDistance = 3)
 
 
 #1.calculate blood hbvctl pool relatedness
-clone_meta <- read.table("C:\\Users\\cuim\\Downloads\\blood_ctl_meta.txt",sep="\t",header=T,stringsAsFactor=F)
+clone_meta <- read.table("blood_ctl_meta.txt",sep="\t",header=T,stringsAsFactor=F)
 result <- list()
 for(patient in unique(clone_meta$patient)){
   a <- clone_meta[clone_meta$patient%in%patient,]
@@ -54,7 +54,7 @@ relatedness_value_blood <- relatedness_value[!duplicated(relatedness_value),]
 
 
 #2.calculate liver hbvctl pool relatedness
-clone_meta <- read.table("C:\\Users\\cuim\\Downloads\\liver_ctl_meta.txt",sep="\t",header=T, stringsAsFactor=F)
+clone_meta <- read.table("liver_ctl_meta.txt",sep="\t",header=T, stringsAsFactor=F)
 result = list()
 for(patient in unique(clone_meta$donor_name)){
   a <- clone_meta[clone_meta$donor_name%in%patient,]
