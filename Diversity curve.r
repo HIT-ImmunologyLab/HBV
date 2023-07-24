@@ -91,64 +91,34 @@ if (!silent) {
 invisible(p1)
 }
 
-
-
 ###################liver hbvctl tcr diversity
 immune_info_data = read.table("liver_ctl_meta.txt",sep="\t",header=T,stringsAsFactor=F)
-
+immune_info_data$clone_id=immune_info_data$tcr_full_length
 result_dir <- "~/clone_abundance_analysis"
 result_prefix <- "Liver_TCR"
 AHB_colors <- rep("#E41A1C",3)
 IA_colors <- rep("#377EB8",3)
 IC_colors <- rep("#4DAF4A",4)
 IT_colors <- rep("#FF7F00",4)
-
 patient_colors <- c(AHB_colors,IA_colors,IC_colors,IT_colors)
-
-## clonal abundance
-immune_info_data[,'patient'] <- immune_info_data[,'donor_name']
-immune_info_data[,'patient'] <- apply(as.matrix(immune_info_data[,'patient']), 1, function(x){
-unlist(strsplit(x,"_"))[1]
-})
-
-
-
 ## clonal diversity
 diversity_curve_immune_patient <- alphaDiversity(immune_info_data, group="patient",
 							  min_q=0, max_q=20, step_q=0.1,ci=0.95, nboot=200)
-
-
 diversity_curve_immune_patient@diversity$patient=factor(diversity_curve_immune_patient@diversity$patient,
 levels=c("AHB01" ,"AHB02","AHB03","A04","A06","A07","C01","C03","C04","C06","T02", "T04","T05","T06"))
 p1= plotDiversityCurve_correct(diversity_curve_immune_patient, colors = patient_colors, legend_title="patient")+guides(colour =guide_legend(override.aes=list(size=5))) +
 theme(plot.title=element_text(hjust=0.5,size=12))+ggtitle("HBV-specific TCR clonal diversity(liver)")
 
-
-
-
 ###################blood hbvctl tcr diversity
-
-
 immune_info_data=read.table("blood_ctl_meta.txt",sep="\t",header=T,stringsAsFactor=F)
+immune_info_data$clone_id=immune_info_data$tcr_full_length						     
 result_dir <- "~/clone_abundance_analysis"
 result_prefix <- "Blood_TCR"
-
 AHB_colors <- rep("#E41A1C",3)
 IA_colors <- rep("#377EB8",3)
 IC_colors <- rep("#4DAF4A",5)
 IT_colors <- rep("#FF7F00",4)
-
 patient_colors <- c(AHB_colors,IA_colors,IC_colors,IT_colors)
-
-
-
-## clonal abundance
-immune_info_data[,'donor_name'] <- immune_info_data[,'patient']
-immune_info_data[,'patient'] <- apply(as.matrix(immune_info_data[,'patient']), 1, function(x){
-unlist(strsplit(x,"_"))[1]
-})
-
-
 ## clonal diversity
 diversity_curve_immune_patient2 <- alphaDiversity(immune_info_data, group="patient",
 								  min_q=0, max_q=20, step_q=0.1,ci=0.95, nboot=200)
@@ -156,10 +126,6 @@ diversity_curve_immune_patient2 <- alphaDiversity(immune_info_data, group="patie
 
 diversity_curve_immune_patient2@diversity$patient=factor(diversity_curve_immune_patient2@diversity$patient,
 levels=c("AHB01" ,"AHB02","AHB03","A04","A06","A07","C01","C03","C04","C05","C06","T02", "T04","T05","T06"))
-
-
-
-
 save_file <- paste(result_dir,"/",result_prefix,"_clonal_diversity_by_patientxx.pdf",sep="")
 p2= plotDiversityCurve_correct(diversity_curve_immune_patient2, colors = patient_colors, legend_title="patient")+
 guides(colour =guide_legend(override.aes=list(size=5))) +
